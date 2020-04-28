@@ -1,22 +1,46 @@
 
-const ulElement = document.querySelector('.lista');
+const ulElement = document.querySelector('#lista');
 const inputElement = document.querySelector('input[name=todo]');
-// var buttonElement = document.createElement('button');
-// var aText =  document.createTextNode('Excluir')
+const buttonElement = document.querySelector('#app button');
 
-function addTodo() {
-  var liElement = document.createElement('li');
-  var inputValueElement = inputElement.value;
-  var liTextElement = document.createTextNode(inputValueElement)
+var todos = [
+  'Acordar',
+  'Tomar café',
+  'Escovar os dentes'
+];
 
-  liElement.appendChild(liTextElement);
+function renderTodo() {
+  ulElement.innerHTML = "" ;
 
-  ulElement.appendChild(liElement);
+  for (todo of todos) {
+    var liElement = document.createElement('li');
+    var liTextElement = document.createTextNode(todo);
+    var linkElement = document.createElement('a');
+    var linkTextElement = document.createTextNode('Excluir');
+    var position = todos.indexOf(todo);
 
+    linkElement.setAttribute('onclick', `deleteTodo(${position})`);
+    linkElement.setAttribute('href', '#');
+
+    liElement.appendChild(liTextElement);
+    liElement.appendChild(linkElement);
+    linkElement.appendChild(linkTextElement);
+    ulElement.appendChild(liElement);
+  }
 }
 
-function deleteTodo() {
+renderTodo();
 
-  alert('Função excluir to-do aqui');
+function addTodo() {
+  var inputValueElement = inputElement.value;
+  todos.push(inputValueElement);
+  inputElement.value = "";
+  renderTodo();
+}
 
+buttonElement.onclick = addTodo;
+
+function deleteTodo(position) {
+  todos.splice(position, 1);
+  renderTodo();
 }
